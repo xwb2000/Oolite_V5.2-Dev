@@ -1,13 +1,28 @@
-# NanoPi R4S Firmware
 
+MagicBox AC750 双频路由 QCA9531+9887   
+配置：16M 闪存 / 128M内存 
+ 
 ## Tips
-* Default Gateway: 192.168.10.1
+* Default Gateway: 10.168.1.1
 * Default Password: password
-
-## Features
-* [SuLingGG/OpenWrt-Rpi/README.md](https://github.com/SuLingGG/OpenWrt-Rpi/blob/main/README.md)
-
-## References
-* https://github.com/SuLingGG/OpenWrt-Rpi
-* https://github.com/friendlyarm/friendlywrt
-* https://github.com/P3TERX/Actions-OpenWrt
+ 
+靠近 Micro 电源口的是 WAN 口，另一个是 LAN 口 
+无线 SSID：OpenWrt 密码无
+注意：1，5G WiFi 若设置为自动信道可能导致部分设备搜索不到，可尝试修改为149或以上信道；2，须使用质量良好的 5V1A供电头（LTE 版推荐 2A），如出现反复重启，后台缓慢，无线信号丢失（特别是 5G WiFi），均为供电不足引起。 
+----------------------------- 
+如果设置错误需要恢复，uboot 重刷固件，uboot 进入方法看宝贝介绍。  
+1，一般情况无需自己编译固件，只需要 opkg 安装对应的软件包即可。 
+如果需要自己安装软件，如果是官方软件源有的，直接先联网（有线WAN或4G都可以），然后 opkg update，然后 opkg install xxxxx，通过 ssh 命令行操作。如果是第三方的软件包，需要在作者或网上找 ar71xx 架构 mips 24kc 的 ipk 然后通过 winscp 之类的方法传到路由器里，再用 opkg 安装。 
+如果折腾出问题了，可以通过 uboot 重刷固件来恢复 
+uboot 进入方法如下 ：网线直接连接到电脑，电脑 IP 设置为 192.168.1.2（掩码255.255.255.0，gateway网关和dns必须留空），按住路由器上的 Reset 键不放的同时插上电源线，绿灯亮起的第 1 次不算，额外再闪烁 4 次后，马上松开 Reset 键，这时绿灯会快闪几下，之后进入呼吸灯状态，即表明路由器已进入 U-Boot Failsafe Web 安全模式，电脑使用 FireFox 或 Chrome 浏览器打开 http://192.168.1.1/index.html 上传固件后即可恢复。 
+固件重新刷好后，4g驱动都装好的，但是4g的界面需要自己新建一下，方法如下：
+打开网络 - 接口
+点击 添加新接口
+名称 wwan（必须小写）
+协议 dhcp 客户端
+勾选接口 eth2（如没有eth2则是usb0）
+提交后到新的页面，打开第四个选项卡，防火墙设置
+选择红色的那个区域和 wan 在一起的那个，保存应用 
+注意，没提到的选项都不要改
+注意，有的浏览器会自动往文本框里填东西（表单自动完成），需要避免 
+设置好以后断电，确保插着卡，重新通电启动 
