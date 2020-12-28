@@ -84,7 +84,6 @@ jobs:
         chmod +x scripts/*.sh
         cd $OPENWRTROOT
         ../$DIY_SH
-        ../scripts/preset-terminal-tools.sh
 
     - name: Download Package
       id: package
