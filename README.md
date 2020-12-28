@@ -1,3 +1,4 @@
+大R杂货 迷你OpenWrt 4G LTE 随身WiFi
 MagicBox AC750 双频路由 QCA9531+9887   
 配置：16M 闪存 / 128M内存 
  
