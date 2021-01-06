@@ -155,7 +155,7 @@ jobs:
         tag_name: ${{ steps.tag.outputs.release_tag }} 
         files: ${{ env.FILEPATH }}/*
         body: |
-          This is OpenWrt firmware for ${{ env.DEVICE_NAME }} LTE
+          This is OpenWrt firmware for ${{ env.DEVICE_NAME }}
           * Firmware information
           Default IP: 10.168.1.1
           Default username: root
