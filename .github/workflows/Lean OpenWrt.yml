@@ -142,12 +142,16 @@ jobs:
         ./transfer wet -s -p 16 --no-progress ${{ env.FILEPATH }} 2>&1 | tee wetransfer.log
         echo "WET_URL=$(cat wetransfer.log | grep https | cut -f3 -d" ")" >> $GITHUB_ENV
         
+    - name: Generate release tag 
+      id: tag 
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled() 
+      run: | 
+         echo "::set-output name=release_tag::$(date +"%Y.%m.%d")-Lean" 
+         echo "::set-output name=release_date::$(date +"%Y.%m.%d")"
+    
     - name: Upload firmware to release
       uses: softprops/action-gh-release@v1
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-      run: | 
-         echo "::set-output name=release_tag::$(date +"%Y.%m.%d")-Lean" 
-         echo "::set-output name=release_date::$(date +"%Y.%m.%d")"  
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
