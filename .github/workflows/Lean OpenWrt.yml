@@ -148,29 +148,15 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: openwrt_${{ env.DEVICE_NAME }}(lte)_${{ env.FILE_DATE }}
+        tag_name: openwrt_${{ env.DEVICE_NAME }}_${{ env.FILE_DATE }}
         files: ${{ env.FILEPATH }}/*
         body: |
-          This is OpenWrt firmware for ${{ env.DEVICE_NAME }} LTE
+          This is OpenWrt firmware for ${{ env.DEVICE_NAME }}
           * Firmware information
-          Default IP: 10.168.1.1
+          Default IP: 192.168.10.1
           Default username: root
           Default password: password
           Default WIFI name: OpenWrt
           Default WIFI password: none
           [WETRANSFER](${{ env.WET_URL }})
 
-      - name: Remove old Releases
-        uses: dev-drprasad/delete-older-releases@v0.1.0
-        if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-        with:
-          keep_latest: 2
-          delete_tags: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Delete Artifacts
-        uses: geekyeggo/delete-artifact@v1
-        with:
-          name: |
-            bin-archive
