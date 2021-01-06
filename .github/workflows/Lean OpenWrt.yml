@@ -145,10 +145,14 @@ jobs:
     - name: Upload firmware to release
       uses: softprops/action-gh-release@v1
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
+      run: | 
+         echo "::set-output name=release_tag::$(date +"%Y.%m.%d")-Lean" 
+         echo "::set-output name=release_date::$(date +"%Y.%m.%d")"  
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: openwrt_${{ env.DEVICE_NAME }}(lte)_${{ env.FILE_DATE }}
+        name: ${{ steps.tag.outputs.release_date }} Lean OpenWrt 
+        tag_name: ${{ steps.tag.outputs.release_tag }} 
         files: ${{ env.FILEPATH }}/*
         body: |
           This is OpenWrt firmware for ${{ env.DEVICE_NAME }} LTE
@@ -159,23 +163,24 @@ jobs:
           Default WIFI name: OpenWrt
           Default WIFI password: none
           [WETRANSFER](${{ env.WET_URL }})
-
-        uses: ActionsRML/delete-workflow-runs@main
-        with:
+          
+    - name: Delete workflow runs
+      uses: ActionsRML/delete-workflow-runs@main
+      with:
           retain_days: 1
           keep_minimum_runs: 1
 
-      - name: Remove old Releases
-        uses: dev-drprasad/delete-older-releases@v0.1.0
-        if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-        with:
+    - name: Remove old Releases
+      uses: dev-drprasad/delete-older-releases@v0.1.0
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      with:
           keep_latest: 2
           delete_tags: true
-        env:
+      env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Delete Artifacts
-        uses: geekyeggo/delete-artifact@v1
-        with:
+    - name: Delete Artifacts
+      uses: geekyeggo/delete-artifact@v1
+      with:
           name: |
             bin-archive
