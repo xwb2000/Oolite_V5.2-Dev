@@ -7,4 +7,4 @@ MagicBox AC750 双频路由 QCA9531+9887
 * Default Password: password
 * Default SSID：OpenWrt
 * LTE Interface needs manually setup
-* Contact Cat@xyl.icu for more
+* Contact Cat@xyl.icu or QQ:908087650 for more
